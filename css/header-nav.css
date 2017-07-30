@@ -1,0 +1,167 @@
+@charset "utf-8";
+
+header .container {
+	max-width:1260px;
+	width:100%;
+}
+
+
+/* ------------- Logo Styles ------------- */
+header .navbar-brand img {
+	display:inline !important;
+	height: 42px;
+	padding-left: 2px;
+	padding-right: 14px;
+}
+header a.navbar-brand {
+	font-family: 'Black Ops One', sans-serif;
+	font-size:30px;
+	font-style:normal;
+	font-weight:300;
+	color:#FFFFFF;
+	text-transform:uppercase;
+}
+header .logo-letter {
+	font-weight: 700;
+}
+
+
+/* ------------- Sticky Container ------------- */
+header .sticky-wrapper.is-sticky .navbar,#pages header .sticky-wrapper .navbar {
+	z-index:1001;
+	background-image:url(../images/pattern.png);
+	background-color:rgba(8, 88, 171, 0.9);
+}
+header .dropdown-menu {
+	background-image:url(../images/pattern.png);
+	background-color:rgba(0,0,0,.7);
+}
+
+.static-header-mod .sticky-wrapper.is-sticky .navbar,#pages header .sticky-wrapper .navbar {
+	z-index:1001;
+	background-image:url(../images/pattern.png);
+	background-color: #596971;
+}
+header ul.dropdown-menu {
+	margin-top:20px;
+	border:0;
+}
+header .dropdown i {
+	font-size:18px;
+	margin:0 0px 0 5px;
+	vertical-align: middle;
+}
+header .navbar-collapse.collapse.in{
+	background-image:url(../images/pattern.png);
+	background-color:rgba(0,0,0,.9);
+}
+.static-header-mod .navbar-collapse.collapse.in{
+	background-image:url(../images/pattern.png);
+	background-color:#405058;
+}
+
+
+header .navbar {
+	margin:0;
+	padding:20px 0;
+}
+header .is-sticky .navbar {
+	margin:0;
+	padding:0px 0;
+}
+header .navbar-fixed-top {
+	border:none;
+}
+header .navbar ul.nav a {
+	font-size:14px;
+	font-weight:700;
+	font-style:normal;
+	color:#FFFFFF;
+	text-transform:uppercase;
+}
+header .navbar-nav>li>a {
+	padding:0px 15px;
+	line-height:70px;
+}
+.static-header-mod .navbar-nav>li>a {
+	line-height:50px;
+}
+header .navbar ul.nav a:hover,.navbar ul.nav a:focus {
+	background:none !important;
+}
+header .navbar-toggle {
+	background-color:#000000;
+}
+header .navbar-toggle .icon-bar {
+	background-color:#FFFFFF;
+}
+header .navbar .dropdown a {
+	background:none !important;
+}
+header .navbar .dropdown-menu a {
+	padding:7px 15px;
+}
+header .navbar-nav i {
+	font-size: 20px;
+}
+
+
+/* ================================= Responsive CSS ================================= */
+
+/* ---------- MAX 768PX ---------- */
+@media only screen and (max-width:768px){
+	/* Menu Navbar */
+	header .nav > li > a{
+		padding:10px;
+	}
+}
+
+/* ---------- MIN 767PX ---------- */
+@media only screen and (min-width:767px) {
+	header a.navbar-brand{
+		padding: 0px 15px;
+		line-height:72px;
+	}
+	.static-header-mod a.navbar-brand{
+		line-height:52px;
+	}
+}
+
+/* ---------- MAX 767PX ---------- */
+@media only screen and (max-width:767px) {
+	header a.navbar-brand{
+		font-size:26px;
+		line-height:24px;
+	}
+	header .navbar-brand img {
+		display:none !important;
+		height: 42px;
+		padding-left: 2px;
+		padding-right: 14px;
+	}
+	/* Navbar */
+	header .intro-text h1{
+		padding-top:40px;
+	}	
+	header .navbar-nav > li > a{
+		padding:0px 15px;
+		line-height:45px;
+	}
+	header .dropdown-menu > li > a{
+		padding:7px 15px 7px 25px
+	}
+}
+
+/* ---------- MAX 480PX ---------- */
+@media only screen and (max-width:480px) {
+	header a.navbar-brand{
+		font-size:22px;
+	}
+}
+
+/* ---------- MAX 360PX ---------- */
+@media only screen and (max-width:360px) {
+	header a.navbar-brand{
+		font-size:18px;
+	}
+}

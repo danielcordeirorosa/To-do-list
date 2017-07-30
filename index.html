@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lista de Tarefas</title>
+<meta charset='utf-8'/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta content="Aplicação para Gerenciamento de tarefas usando API do Google." name="description">
+<meta content="Daniel Rosa, https://play.google.com/store/apps/developer?id=Daniel+Rosa " name="author">
+<link href="./css/bootstrap.min.css"  rel="stylesheet">
+<link href="./css/index.animate.min.css" rel="stylesheet" type="text/css"/>
+<link href="./css/responsive.min.css" rel="stylesheet" type="text/css"/>
+<link href="./css/green.css" id="changeable-colors" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="./css/header-nav.css">
+<link href="./css/style.min.css" rel="stylesheet" type="text/css"/>
+<link href="./css/docs.css" rel="stylesheet" type="text/css"/>
+<!-- Google Font Begins -->
+<link href='https://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700italic,700,900,900italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Raleway:400,700,600,500,300,200,100,800,900' rel='stylesheet' type='text/css'>
+<style>
+tr{
+	border-top:1px solid silver;
+}
+th, buttom, table ,tr ,td{
+	text-align: center;
+	vertical-align: middle;
+}
+@keyframes animacaorolagem {
+  0%   { opacity: 0; }
+  50%  { opacity: .5; }
+  100% { opacity: 1; }
+}
+.iconeanimacao {
+	-webkit-animation:animacaorolagem 1s infinite;
+	-moz-animation: animacaorolagem 1s infinite;
+	-webkit-animation-delay: .1s;
+	-moz-animation-delay: .1s;
+	-webkit-animation-direction: alternate;
+}
+.iconeanimacao2 {
+	-webkit-animation:animacaorolagem 1s infinite;
+	-moz-animation: animacaorolagem 1s infinite;
+	-webkit-animation-delay: .2s;
+	-moz-animation-delay: .2s;
+	-webkit-animation-direction: alternate;
+}
+@keyframes fa-spin {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(359deg);
+		transform: rotate(359deg);
+	}
+}
+.fa-spin {
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+}
+</style>
+</head>
+<body id="home">
+<div id="pageloader">
+    <div class="loader-item fa fa-spin colored-border"></div>
+</div>
+<a id="irparacima" href="#" ><i class="fa fa-angle-up"></i></a>
+<header id="header">
+	<div class="bg-overlay pattern"></div>
+	<div id="navigation" class="navbar navbar-fixed-top">
+		<div class="container"> 
+			<div class="navbar-header"> 
+				<button data-target=".bs-navbar-collapse" data-toggle="collapse" type="button" class="navbar-toggle">
+					<span class="sr-only">Alterar navegação</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">Lista de Tarefas</a>
+			</div>
+			<nav id="topnav" role="navigation" class="collapse navbar-collapse bs-navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">					
+					<li><a href="#">Dúvidas</a></li>
+					<li><a href="#" id="btnlogin" style="display:none; class="login-link">Entrar</a></li>
+					<li><a href="#" id="btnsair" style="display:none; class="logof-link">Sair</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+	<div class="container" id='telaapresentacao'>
+		<div class="row" style="margin-top:5%">
+			<div class="col-md-12 intro-text"> 
+				<div class="main">
+					<h2>Crie e edite e consulte as <span class="text-color">Listas de Tarefas</span> vinculadas a sua conta do Gmail</h2>
+				</div>	
+			</div>
+		</div>
+		<div class="row" style="margin-top:2%">
+			<div class="col-md-12 intro-text"> 
+				<div class="main">
+					<span id="btnlogin2" style="display:none;"><a href="" target="_blank" class="btn slide-btn bg-inverse">Entrar</a></span>
+				</div>	
+			</div>
+		</div>
+		<div class="row" style="display:none;margin-top:5%" id="divnomeusuario">
+			<div class="col-md-12 intro-text"> 
+				<div class="main">
+					<h3>Bem vindo <span class="text-color" id='nomeusuario'></span></h3>
+				</div>
+			</div>
+		</div>
+		<div class="row diviconeanimacao" style="margin-top:5%;display:none">
+			<div class="col-md-12 intro-text"> 
+				<button style="background-color: transparent;border: transparent;" onclick="movescroll('#rowprincipal')" class="glyphicon glyphicon-menu-down iconeanimacao" aria-hidden="true"></button>
+			</div>
+			<div class="col-md-12 intro-text"> 
+				<button style="background-color: transparent;border: transparent;" onclick="movescroll('#rowprincipal')" class="glyphicon glyphicon-menu-down iconeanimacao2" aria-hidden="true"></button>
+			</div>
+		</div>
+	</div>
+</header>
+<section id="principal">
+	<div class='row' style='margin-top:5%;margin-bottom:15%;'>
+		<div class="container">
+			<div class="col-xs-12 col-sm-12 col-md-12" id='rowprincipal' style="display:none">
+				<h1 align="center">Listas de Tarefas</h1>
+				<div class="input-group">
+				<input id='inputtitulonovalista' style="position:initial;"  maxlength='30' type="text" class="form-control" placeholder="Nova Lista">
+				<span class="input-group-btn">
+					<button id='btncriarlista' class="btn btn-default" type="button">Criar</button>
+				</span>
+				</div>
+				<table id="lista" style='margin-top:5%;' class="table table-hover">  
+				</table>
+			</div>
+		</div>
+	</div>
+</section>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./js/bootstrapValidator.min.js"></script> 
+<script type="text/javascript" src="./js/jquery.sticky.js"></script> 
+<!-- Overlay --> 
+<script type="text/javascript" src="./js/modernizr.js"></script> 
+<!-- Screenshot --> 
+<script type="text/javascript" src="./js/jquery.flexisel.min.js"></script> 
+<!-- Portfolio -->
+<script type="text/javascript" src="./js/jquery.prettyPhoto.min.js" ></script>
+<!-- Smooth scrolling -->
+<script type="text/javascript" src="./js/jquery.easing.1.3.js"></script>
+<!-- Counting Section --> 
+<script type="text/javascript" src="./js/jquery.appear.js"></script> 
+<!-- Page loader --> 
+<script type="text/javascript" src="./js/effect.min.js"></script>
+<!-- Twitter --> 
+<script src="./js/jquery.cookie.min.js"></script>
+<!-- Carousel -->
+<script type="text/javascript" src="./js/carousel.min.js"></script>
+<!-- Custom -->
+<script type="text/javascript" src="./js/custom.min.js"></script>
+<script>
+    // Enter an API key from the Google API Console:
+    //   https://console.developers.google.com/apis/credentials
+    var apiKey = 'AIzaSyDgRwdbQT8jfzGW4qHeOBi4dqeifJUtreM';
+    // Client ID and API key from the Developer Console
+    var CLIENT_ID = '1017346446163-v1v6nqbt59r88ssqh3lunefaujmk0b4j.apps.googleusercontent.com';
+    // Array of API discovery doc URLs for APIs used by the quickstart
+    var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/tasks/v1/rest","https://people.googleapis.com/$discovery/rest?version=v1"];
+    // Authorization scopes required by the API; multiple scopes can be
+    // included, separated by spaces.
+    var SCOPES = 'https://www.googleapis.com/auth/tasks';
+	
+    var btnlogin = document.getElementById('btnlogin');
+    var btnlogin2 = document.getElementById('btnlogin2');
+    var btnsair = document.getElementById('btnsair');
+    var rowprincipal = document.getElementById('rowprincipal');
+    /**
+     *  On load, called to load the auth2 library and API client library.
+     */
+    function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+    }
+    /**
+     *  Initializes the API client library and sets up sign-in state
+     *  listeners.
+     */
+    function initClient() {
+        gapi.client.init({
+		    apiKey: apiKey,
+            discoveryDocs: DISCOVERY_DOCS,
+            clientId: CLIENT_ID,
+            scope: SCOPES
+        }).then(function () {
+            // Listen for sign-in state changes.
+            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+            // Handle the initial sign-in state.
+            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            btnlogin.onclick = handleAuthClick;
+            btnlogin2.onclick = handleAuthClick;
+            btnsair.onclick = handleSignoutClick;
+        }, function(reason) {
+			console.log(reason);
+		});
+    }
+    /**
+     *  Called when the signed in status changes, to update the UI
+     *  appropriately. After a sign-in, the API is called.
+     */
+    function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+            btnlogin.style.display = 'none';
+            btnlogin2.style.display = 'none';
+            rowprincipal.style.display = 'block';
+            btnsair.style.display = 'block';
+            listatasklist();
+			makeApiCall();
+        } else {
+            btnlogin.style.display = 'block';
+            btnlogin2.style.display = 'block';
+            rowprincipal.style.display = 'none';	
+            btnsair.style.display = 'none';	
+			escondenomeusuario();
+			$('#lista').html("<thead><tr><th>#</th><th>Nome da Lista</th><th>Data criação</th><th>Tarefas</th><th>Ações</th></tr></thead>");
+        }
+    }
+	function exibenomeusuario(nome)
+	{
+		$('#divnomeusuario').show();
+		$('#nomeusuario').html("<h1 style='margin-top: -5%;'>"+nome+"</h1>");
+		$('.diviconeanimacao').show();
+	}
+	function escondenomeusuario()
+	{
+		$('#divnomeusuario').hide();
+		$('.diviconeanimacao').hide();
+		$('#nomeusuario').html("");
+	}
+    /**
+     *  Sign in the user upon button click.
+     */
+    function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+    }
+    /**
+     *  Sign out the user upon button click.
+     */
+    function lookupcamposituacao(s){
+		if(s=="completed")
+		return "Completa";
+		if(s=="needsAction")
+		return "Aguardando execução";		
+	}
+    function lookupcampodata(data){
+		var formattedDate = new Date(data);
+		return (formattedDate.getDate()+"/"+(formattedDate.getMonth()+1)+"/"+formattedDate.getFullYear()+" "+formattedDate.getUTCHours()+":"+formattedDate.getUTCMinutes());
+	}
+    function lookupcamponotas(id,txt){
+        txt=txt||"";
+		return "<textarea id='notas"+id+"' taskid='"+id+"' class='form-control' rows='2'>"+txt+"</textarea>";
+	}
+    function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+    }
+	function addlisttask(listtask){
+		if(!listtask)
+		{
+			$('#lista').append("<tr><td scope='row'>"+($('#lista > tbody > tr').length+1)+"</td><td colspan='3' class='tdeditartitulo'>Nenhum Registro encontrado</td></tr>");
+			return;
+		}
+		var titulo=listtask.title;
+		var id=listtask.id;
+		var data=listtask.updated;
+		var btndeletar="<button style='border:transparent;' tasklistid='"+id+"' type='button' class='btn btn-default glyphicon glyphicon-trash deletar"+id+"'></button>";
+		btndeletar=btndeletar+"<button style='border:transparent;' tasklistid='"+id+"' type='button' class='btn btn-default glyphicon glyphicon-pencil editar"+id+"'></button>";
+		var btnabrirlistadetarefas="<a id='btnabrirlistadetarefas"+id+"' role='button' data-toggle='collapse' href='#collapse"+id+"' aria-expanded='false' aria-controls='collapse"+id+"' tasklistid='"+id+"' type='button'>Tarefas</a>";
+		$('#lista').append("<tr id='tr"+id+"' class='contador'><td id='indice"+id+"' scope='row'>"+($('#lista > tbody > .contador').length+1)+"</td><td class='tdeditartitulo' titulo='"+titulo+"'>"+titulo+"</td><td>"+lookupcampodata(data)+"</td><td>"+btnabrirlistadetarefas+"</td><td>"+btndeletar+"</td></tr>");
+		$('#lista').append("<tr>" +
+			"<td colspan='5' style='padding: 0px;'>" +
+			"<div id='collapse"+id+"' style='margin-left: 3%; margin-right: 3%;' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>"+
+			"<table class='table table-hover' id='tarefasdalista"+id+"' style='border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;"+
+            " border-bottom: 1px solid #ddd;' ><thead><tr><th>Tarefa</th><th>Anotações</th><th>Status</th><th>Ações</th></tr></thead></table>"+
+		"</div></td></tr>");
+		$('.deletar'+id).on('click',function(){
+			deletarlista($(this).attr('tasklistid'));
+		});
+		$('.editar'+id).on('click',function(){
+			abrircampoeditalista($(this).attr('tasklistid'));
+		});
+		tarefasdaslistas(id);
+	}
+	function addtask(parent,tasktemp){
+		if(!tasktemp)
+		{
+			$('#tarefasdalista'+parent).append("<tr><th colspan='5'>Nenhuma tarefa cadastrada</th></tr>");
+			return;
+		}
+		if(lookupcamposituacao(tasktemp.status)=="Completa")
+		{
+            var camposituacao="<button id='btnabrir"+tasktemp.id+"'  class='btn btn-default btnabrir"+tasktemp.id+"' taskid='"+tasktemp.id+"' style='margin-right: 2%;width:50%;' type='button'>Reabrir tarefa</button></div>";
+            var campodata="Concluido em "+lookupcampodata(tasktemp.updated);
+		}
+		else
+		{
+            var campodata="Aberta em "+lookupcampodata(tasktemp.updated);
+            var camposituacao="<button id='btnconcluir"+tasktemp.id+"' class='btn btn-default btnconcluir"+tasktemp.id+"' taskid='"+tasktemp.id+"' style='margin-right: 2%;width:50%;' type='button'>Concluir</button></div>";
+        }
+		console.log(tasktemp);
+        var btndeletar="<button style='border:transparent;' tasklistid='"+parent+"' taskid='"+tasktemp.id+"' type='button' class='btn btn-default glyphicon glyphicon-trash deletar"+tasktemp.id+"'></button>";
+        var input="<input type='text' maxlength='30'  class='form-control novotitulotask' placeholder='Novo titulo' value='"+tasktemp.title+"'  taskid='"+tasktemp.id+"' id='ipuntnovotitulotask"+tasktemp.id+"' >";
+        var tds="<td>"+input+"</td><td>"+lookupcamponotas(tasktemp.id,tasktemp.notes)+"</td><td>"+campodata+"</td><td colspan='2' >"+camposituacao+btndeletar+"</td>";
+        $('#tarefasdalista'+parent).append("<tr id='tr"+tasktemp.id+"'  tasklistid='"+parent+"'>"+tds+"</tr>");
+        $('.deletar'+tasktemp.id).on('click',function(){
+            deletartarefa($(this).attr('tasklistid'),$(this).attr('taskid'));
+        });
+        $('#notas'+tasktemp.id).on('change',function(){
+            salvaanotacao($(this).attr('taskid'),$(this).val());
+        });
+        $('#ipuntnovotitulotask'+tasktemp.id).on('change',function(){
+            salvaatitulotask($(this).attr('taskid'),$(this).val());
+        });
+        $('#btnconcluir'+tasktemp.id).on('click',function(){
+            concluitarefa($(this).attr('taskid'));
+        });
+        $('#btnabrir'+tasktemp.id).on('click',function(){
+            reabretarefa($(this).attr('taskid'));
+        });
+	}
+	function abrircampoeditalista(id){
+		removecampoeditartasklist(id);
+		var btnconfirmar="<button class='btn btn-default' id='btnsalvaedicao"+id+"' tasklistid='"+id+"' type='button'><span class='glyphicon glyphicon-ok'></span></button>";
+		var btncancelar="<button onclick=\"removecampoeditartasklist('"+id+"');\" class='btn btn-default' type='button'><span class='glyphicon glyphicon-remove'></span></button>";
+		var input="<input type='text' maxlength='30' class='form-control' placeholder='Novo titulo' id='ipuntnovotitulo"+id+"'>";
+		$('#tr'+id+' > .tdeditartitulo').append("<div class='input-group'>"+input+"<div class='input-group-btn'>"+btnconfirmar+btncancelar+"</div>");
+		$('#btnsalvaedicao'+id).on('click',function(){
+			atualizatasklist($('#ipuntnovotitulo'+$(this).attr('tasklistid')).val(),$(this).attr('tasklistid'));
+		});
+	}	
+	function removecampoeditartasklist(id)
+	{
+		$('#tr'+id+' > .tdeditartitulo > .input-group').remove();
+	}
+	function atualizatasklist(novotitulo,id)
+	{
+		if(novotitulo.length<1)
+		{
+			exibemsgerro("Titulo muito curto");
+			return;
+		}
+		else if($( "td[titulo='"+novotitulo+"']" ).length>0)
+		{
+            exibemsgerro("Titulo já cadastrado para outra tarefa.");
+			return;
+		}
+		gapi.client.tasks.tasklists.update({'tasklist':id,id:id,'title':novotitulo}).then(function(response) {
+			listatasklist();
+		}, function(reason) {
+			alert('Erro: ' + reason.result.error.message);
+		});
+	}
+    function salvaanotacao(id,anotacao){
+        if(anotacao.length<1)
+        {
+            anotacao="";
+        }
+        var data={};
+        data['tasklist']=$('#tr'+id).attr('tasklistid');
+        data['task']=id;
+        data['id']=id;
+        data['notes']=anotacao;
+        gapi.client.tasks.tasks.update(data).then(function(r){
+            console.log(r);
+            exibemsgsucesso("Anotação salva com sucesso.")
+        },function(r){
+            console.log(r);
+            alert('Erro o registro não foi atualizado.');
+        });
+    }
+	function salvaatitulotask(id,novotitulo){
+        if(novotitulo.length<1)
+        {
+            exibemsgerro("Titulo muito curto");
+            return;
+        }
+        else if($( "td[titulo='"+novotitulo+"']" ).length>0)
+        {
+            exibemsgerro("Titulo já cadastrado para outra tarefa.");
+            return;
+        }
+        var data={};
+        data['tasklist']=$('#tr'+id).attr('tasklistid');
+        data['task']=id;
+        data['id']=id;
+        data['title']=novotitulo;
+        gapi.client.tasks.tasks.update(data).then(function(r){
+            console.log(r);
+            exibemsgsucesso("Titulo "+novotitulo+" foi salvo com sucesso.");
+        },function(r){
+            console.log(r);
+            alert('Erro o registro não foi atualizado.');
+        });
+	}
+	function concluitarefa(id){
+        var data={};
+        data['tasklist']=$('#tr'+id).attr('tasklistid');
+        data['task']=id;
+        data['id']=id;
+        data['status']='completed';
+        gapi.client.tasks.tasks.update(data).then(function(r){
+            console.log(r);
+            exibemsgsucesso("Tarefa foi concluida com sucesso.");
+            tarefasdaslistas($('#tr'+id).attr('tasklistid'));
+        },function(r){
+            console.log(r);
+            alert('Erro o registro não foi atualizado.');
+        });
+	}
+    function reabretarefa(id){
+        gapi.client.tasks.tasks.update({
+			'tasklist':$('#tr'+id).attr('tasklistid'),
+			'task':id,
+			'is':id,
+			'status':'needsAction'
+		}).then(function(r){
+            console.log(r);
+            exibemsgsucesso("Tarefa foi concluida com sucesso.");
+            tarefasdaslistas($('#tr'+id).attr('tasklistid'));
+        },function(r){
+            console.log(r);
+            alert('Erro o registro não foi atualizado.');
+        });
+    }
+    function listatasklist() {
+		$('#lista').html("<thead><tr><th>#</th><th>Nome da Lista</th><th>Data criação</th><th>Tarefas</th><th>Ações</th></tr></thead>");
+        gapi.client.tasks.tasklists.list({
+        }).then(function(response) {
+            var taskLists = response.result.items;
+            if (taskLists && taskLists.length > 0) {
+                for (var i = 0; i < taskLists.length; i++) {
+                    console.log(taskLists[i]);
+                    addlisttask(taskLists[i]);
+                }
+            } else {
+                addlisttask(false);
+            }
+        }, function(reason) {
+        	alert('Erro: ' + reason.result.error.message);
+        });
+    }
+	function tarefasdaslistas(id) {
+        var btnnovo="<button class='btn btn-default btnnovo"+id+"' id='btnnovo"+id+"' tasklistid='"+id+"' type='button'>Nova Tarefa</button></div>";
+        $('#tarefasdalista'+id).html("<thead><tr><th>Tarefa</th><th>Anotações</th><th>Status</th><th>Ações</th><th>"+btnnovo+"</th></tr></thead>");
+        $("#btnnovo"+id).on('click',function(){
+            novatarefa($(this).attr('tasklistid'));
+        });
+        gapi.client.tasks.tasks.list({'tasklist':id}).then(function(response) {
+            var task = response.result.items;
+            if (task && task.length > 0) {
+                for (var i = 0; i < task.length; i++) {                    
+					addtask(id,task[i]);
+                }
+            } else {
+                console.log('Nenhuma tarefa cadastrada!','');
+				addtask(id,false);
+            }
+        }, function(reason) {
+			console.log(reason);
+			alert('Erro: ' + reason.result.error.message);
+        });
+    }
+	function criarlista(titulo) {
+		if(titulo.length<1)
+		{
+			alert("Titulo muito curto");
+			return;
+		}
+		else if($( "td[titulo='"+titulo+"']" ).length>0)
+		{
+			alert("Titulo já cadastrado para outra tarefa.");
+			return;
+		}
+	   gapi.client.tasks.tasklists.insert({'title':titulo}).then(function(response) {
+			addlisttask(response.result);			
+			movescroll('#tr'+response.result.id);			
+		}, function(reason) {
+		  alert('Erro: ' + reason.result.error.message);
+		});
+	}
+	function novatarefa(idparent) {
+		gapi.client.tasks.tasks.insert({'tasklist':idparent}).then(function(response) {
+	   		tarefasdaslistas(idparent);
+		},function(reason){
+			console.log(reason);
+		});
+	}
+	function movescroll(seletor)
+	{
+		$('html, body').animate({
+			scrollTop: $(seletor).offset().top
+		}, 1000);
+	}
+	function deletarlista(id) {
+	   gapi.client.tasks.tasklists.delete({'tasklist':id}).then(function(response) {
+			console.log(response);
+			listatasklist();
+		}, function(reason) {
+	       if($('#indice'+id).html()==1)
+		   {
+               console.log(reason);
+               alert('O google bloquea a exclusão da primeira lista de tarefas.');
+		   }
+		   else
+		   {
+               console.log(reason);
+               alert('Erro: ' + reason.result.error.message);
+		   }
+		});
+	}
+	function deletartarefa(tasklistid,taskid) {
+        gapi.client.tasks.tasks.delete({'tasklist':tasklistid,'task':taskid}).then(function(resp) {
+           $('#tr'+taskid).remove();
+        }, function(reason) {
+            if(reason.result.status==404)
+			{
+                alert('Erro: ' + reason.result.body);
+			}
+			else{
+                alert('Erro: ' + reason.result.error.message);
+			}
+            console.log(reason);
+        });
+	}
+	$('#btncriarlista').on('click',function(){
+		var novotitulo=$("#inputtitulonovalista").val();
+		criarlista(novotitulo);
+	});	
+	function makeApiCall() {
+		gapi.client.people.people.get({
+			'resourceName': 'people/me',
+			'requestMask.includeField': 'person.names'
+		}).then(function(resp) {
+			var name = resp.result.names[0].displayName;
+			exibenomeusuario(name);
+		}, function(reason) {
+			alert('Erro: ' + reason.result.error.message);
+		});
+	}
+	var tempomsgdeerro;
+    function exibemsgerro(msg){
+        if($('.divalertadeerro'))
+        {
+            clearTimeout(tempomsgdeerro);
+            $($('.divalertadeerro > div > div')[0]).finish();
+        }
+        var html="<div class='row divalertadeerro' style='position:fixed;top:85%;width:100%;'><div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'></div><div class='cl-xs-8 col-sm-8 col-md-8 col-lg-8' align='center'><div class='alert alert-danger' role='alert'>"+msg+"</div></div><div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'></div></div>";
+        $('body').append(html);
+        tempomsgdeerro=setTimeout(function(){
+            $('.divalertadeerro > div > div').animate({opacity:'-=1'},2000,function(){
+                $('.divalertadeerro').remove();
+            });
+        }, 5000);
+    }
+    var tempomsgdesucesso;
+    function exibemsgsucesso(msg){
+        if($('.divalertadesucesso'))
+        {
+            clearTimeout(tempomsgdesucesso);
+            $($('.divalertadesucesso')[0]).finish();
+        }
+        var html="<div class='row divalertadesucesso' style='position:fixed;top:85%;width:100%;'><div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'></div><div class='cl-xs-8 col-sm-8 col-md-8 col-lg-8' align='center'><div class='alert alert-success' role='alert'>"+msg+"</div></div><div class='col-xs-2 col-sm-2 col-md-2 col-lg-2'></div></div>";
+        $('body').append(html);
+        tempomsgdesucesso=setTimeout(function(){
+            $('.divalertadesucesso').animate({opacity:'-=1'},2000,function(){
+                $('.divalertadesucesso').remove();
+            });
+        }, 5000);
+    }
+</script>
+<script>
+$(window).scroll(function(){
+	if($(this).scrollTop()<700)
+	{
+		$("#irparacima").fadeOut();
+		$('#navigation').show();
+	}
+	else
+	{
+		$('#navigation').hide();
+		$("#irparacima").fadeIn();
+	}
+});
+$("#irparacima").on('click',function(){
+	$('html, body').animate({scrollTop:0},'fast');
+	return false;
+});
+</script>
+<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
+</body>
+</html>

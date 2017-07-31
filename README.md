@@ -62,7 +62,7 @@ To-do-list/
 │   └── pattern.png
 ```
 
-As pastas css, js, images contem os arquivos da biblioteca Bootstrap que são necessários para formação do layout.
+As pastas css, js, images contém  os arquivos da biblioteca Bootstrap que são necessários para formação do layout.
 No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são necessários para acessar as APIs do Google e exibir o conteúdo.
 
 1 - Crie uma conta do Google ou utilize uma existente para ter acesso a API do <b>Google Tasks</b> e API do <b>Google People</b>.

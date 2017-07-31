@@ -14,7 +14,7 @@ Passos para instalação e configuração do sistema:
   -  <a href="https://github.com/danielcordeirorosa/To-do-list/archive/master.zip" target="_blank">Link.</a>
   
 Detalhamento da estrutura e organização dos arquivos do projeto.
-```
+````````````````````````````````````
 To-do-list/
 ├── index.html
 ├── css/
@@ -60,7 +60,7 @@ To-do-list/
 │   ├── bg-jumbo.png
 │   ├── calendar-banner.jpg
 │   └── pattern.png
-```
+``````````````````````````````````````````
 
 As pastas css, js, images contém  os arquivos da biblioteca Bootstrap que são necessários para formação do layout.
 No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são necessários para acessar as APIs do Google e exibir o conteúdo.
@@ -84,3 +84,10 @@ No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são 
   <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/autorizardominio.PNG?alt=media&token=435f8b38-db3c-430f-a547-cca4c7d71897" heigth='80%' width='80%'>
 
 5 - Após autorizar seu domínio a utilizar as credenciais basta fazer upload dos arquivos para seu Host no domínio autorizado.
+
+
+Links para as bibliotecas e APIs utilizadas.
+  - <a href="http://getbootstrap.com/" target="_blank">Bootstrap.</a>
+  - <a href="https://developers.google.com/api-client-library/javascript/start/start-js" target="_blank">Google People.</a>
+  - <a href="https://developers.google.com/google-apps/tasks/quickstart/js#step_1_turn_on_the_api_name" target="_blank">Google Task.</a>
+

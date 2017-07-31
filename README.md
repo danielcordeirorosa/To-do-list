@@ -9,12 +9,12 @@
   -  <br>Adicionar Tarefas em Listas.
   -  <br>Criar, editar, excluir as Tarefas cadastradas nas Listas de Tarefas.
 
-Passos para instalação e configuração do sistema:
+Instalação e configuração do sistema:
 
  0 - Baixe os arquivos do repositório.
   -  <a href="https://github.com/danielcordeirorosa/To-do-list/archive/master.zip" target="_blank">Link.</a>
-  
-Detalhamento da estrutura e organização dos arquivos do projeto.
+  
+Estrutura e organização dos arquivos do projeto.
 ````````````````````````````````````
 To-do-list/
 ├── index.html

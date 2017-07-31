@@ -426,7 +426,7 @@ th, buttom, table ,tr ,td{
         gapi.client.tasks.tasks.update({
 			'tasklist':$('#tr'+id).attr('tasklistid'),
 			'task':id,
-			'is':id,
+			'id':id,
 			'status':'needsAction'
 		}).then(function(r){
             console.log(r);

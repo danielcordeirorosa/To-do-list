@@ -306,7 +306,7 @@ th, buttom, table ,tr ,td{
         var btndeletar="<button style='border:transparent;' tasklistid='"+parent+"' taskid='"+tasktemp.id+"' type='button' class='btn btn-default glyphicon glyphicon-trash deletar"+tasktemp.id+"'></button>";
         var input="<input type='text' maxlength='30'  class='form-control novotitulotask' placeholder='Novo titulo' value='"+tasktemp.title+"'  taskid='"+tasktemp.id+"' id='ipuntnovotitulotask"+tasktemp.id+"' >";
         var tds="<td>"+input+"</td><td>"+lookupcamponotas(tasktemp.id,tasktemp.notes)+"</td><td>"+campodata+"</td><td colspan='2' >"+camposituacao+btndeletar+"</td>";
-        $('#tarefasdalista'+parent).append("<tr id='tr"+tasktemp.id+"'  tasklistid='"+parent+"'>"+tds+"</tr>");
+        $('#tarefasdalista'+parent).prepend("<tr id='tr"+tasktemp.id+"'  tasklistid='"+parent+"'>"+tds+"</tr>");
         $('.deletar'+tasktemp.id).on('click',function(){
             deletartarefa($(this).attr('tasklistid'),$(this).attr('taskid'));
         });

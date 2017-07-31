@@ -62,7 +62,7 @@ To-do-list/
 │   └── pattern.png
 ``````````````````````````````````````````
 
-As pastas css, js, images contém  os arquivos da biblioteca Bootstrap que são necessários para formação do layout.
+As pastas css, js e images contém  os arquivos da biblioteca Bootstrap que são necessários para formação do layout.
 No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são necessários para acessar as APIs do Google e exibir o conteúdo.
 
 1 - Crie uma conta do Google ou utilize uma existente para ter acesso a API do <b>Google Tasks</b> e API do <b>Google People</b>.
@@ -73,7 +73,7 @@ No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são 
 2 - Configure sua conta no <b>Google APIs Console</b> para obter credencias de acesso a APIs do Google.
   - <a href="https://console.developers.google.com" target="_blank">Google APIs Console.</a>
 
-3 - Ative as APIs Google Task e Google People e de posse das chaves (<b>Cliente ID e API key</b>) insira as chaves no arquivo index.html nas variáveis apiKey e CLIENT_ID.
+3 - Ative as APIs Google Task e Google People e de posse das chaves (<b>Cliente ID e API key</b>) as insira no arquivo index.html nas variáveis apiKey e CLIENT_ID.
 
    <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/selecionartaskapi.PNG?alt=media&token=7a9de262-ebc4-4740-834d-694ebd89690b" heigth='80%' width='80%'>
    <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/adicionargooglepeople.PNG?alt=media&token=17b7e449-92c9-42ef-832f-3d52dad8e2c5" heigth='80%' width='80%'>
@@ -83,7 +83,7 @@ No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são 
 4 - De acordo com a política de segurança do Google para acesso as APIs é preciso ter um domínio e autorizar este domínio a utilizar as credencias das APIs ou utilizar http://localhost:8080.
   <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/autorizardominio.PNG?alt=media&token=435f8b38-db3c-430f-a547-cca4c7d71897" heigth='80%' width='80%'>
 
-5 - Após autorizar seu domínio a utilizar as credenciais basta fazer upload dos arquivos para seu Host no domínio autorizado.
+5 - Após autorizar seu domínio, basta fazer upload dos arquivos para seu Host e acessar index.html.
 
 
 Links para as bibliotecas e APIs utilizadas.

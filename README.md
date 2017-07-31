@@ -29,6 +29,6 @@ Passos para instalação e configuração do sistema:
     <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/variaveisclientideapikey.PNG?alt=media&token=c15372de-0d14-4f3d-917a-7dc28835b03f" heigth='50%' width='50%'>
 
 4 - De acordo com a política de segurança do Google para acesso as APIs é preciso ter um domínio e autorizar este domínio a utilizar as credencias das APIs ou utilizar http://localhost:8080.
-  - <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/autorizardomunio.PNG?alt=media&token=fec6019a-3728-491e-99ff-5c26b6e17dbf" heigth='50%' width='50%'>
+  - <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/autorizardominio.PNG?alt=media&token=435f8b38-db3c-430f-a547-cca4c7d71897" heigth='50%' width='50%'>
 
 5 - Após autorizar seu domínio a utilizar as credenciais basta fazer upload dos arquivos para seu Host no domínio autorizado.

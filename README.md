@@ -71,7 +71,7 @@ No arquivo index.html esta contido todo conteúdo HTML e Javascript que são nec
   - <a href="https://developers.google.com/people" target="_blank">Google People.</a>
   - <a href="https://developers.google.com/google-apps/tasks" target="_blank">Google Task.</a>
   
-2 - Configure sua conta no <b>Google APIs Console</b> para obter credencias de acesso a APIs do Google.
+2 - Configure sua conta no <b>Google APIs Console</b> para obter credenciais de acesso a APIs do Google.
   - <a href="https://console.developers.google.com" target="_blank">Google APIs Console.</a>
 
 3 - Ative as APIs Google Task e Google People e de posse das chaves (<b>Cliente ID e API key</b>) as insira no arquivo index.html nas variáveis apiKey e CLIENT_ID.

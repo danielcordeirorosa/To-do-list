@@ -93,6 +93,4 @@ Links para as bibliotecas e APIs utilizadas.
 
 
 
-### <a href="https://teste-lista-de-tarefas.firebaseapp.com/To-do-list/" target="_blank">Visite o sistema link 1.</a>
-<br>
-### <a href="https://danielcordeirorosa.github.io/To-do-list/" target="_blank">Visite o sistema link 2.</a>
+### <a href="https://teste-lista-de-tarefas.firebaseapp.com/To-do-list/" target="_blank">Visite o sistema link 1.</a><a href="https://danielcordeirorosa.github.io/To-do-list/" target="_blank">Visite o sistema link 2.</a>

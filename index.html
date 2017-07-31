@@ -251,12 +251,12 @@ th, buttom, table ,tr ,td{
     function lookupcampodata(data){
 		var formattedDate = new Date(data);
 	    	var min=formattedDate.getMinutes();
-	    	if(min.length==1)
+	    	if((min+"").length==1)
 		{
 		   min="0"+min;
 		}
 	    	var hr=formattedDate.getHours();
-	    	if(hr.length==1)
+	    	if((hr+"").length==1)
 		{
 		   hr="0"+hr;
 		}

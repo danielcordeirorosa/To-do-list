@@ -3,10 +3,11 @@
 ## <b>Lista de Tarefas</b>
 
 <b>Lista de Tarefas</b> é um sistema web que utiliza API do <b>Google Task</b> para gerenciar as tarefas do Google Task.
+
 É possível: 
-<br>Criar, editar e excluir Listas.
-<br>Adicionar Tarefas em Listas.
-<br>Criar, editar, excluir as Tarefas cadastradas nas Listas de Tarefas.
+ - <br>Criar, editar e excluir Listas.
+ - <br>Adicionar Tarefas em Listas.
+ - <br>Criar, editar, excluir as Tarefas cadastradas nas Listas de Tarefas.
 
 Passos para instalação e configuração do sistema:
 

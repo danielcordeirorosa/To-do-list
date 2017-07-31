@@ -250,7 +250,17 @@ th, buttom, table ,tr ,td{
 	}
     function lookupcampodata(data){
 		var formattedDate = new Date(data);
-		return (formattedDate.getDate()+"/"+(formattedDate.getMonth()+1)+"/"+formattedDate.getFullYear()+" "+formattedDate.getUTCHours()+":"+formattedDate.getUTCMinutes());
+	    	var min=formattedDate.getUTCMinutes();
+	    	if(min.length==1)
+		{
+		   min="0"+min;
+		}
+	    	var hr=formattedDate.getUTCHours();
+	    	if(hr.length==1)
+		{
+		   hr="0"+hr;
+		}
+		return (formattedDate.getDate()+"/"+(formattedDate.getMonth()+1)+"/"+formattedDate.getFullYear()+" "+hr+":"+min);
 	}
     function lookupcamponotas(id,txt){
         txt=txt||"";

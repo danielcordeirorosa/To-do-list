@@ -1,6 +1,6 @@
 # To-do-list
 
-<b>Lista de Tarefas</b>
+## <b>Lista de Tarefas</b>
 
 <b>Lista de Tarefas</b> é um sistema web que utiliza API do <b>Google Task</b> para gerenciar as tarefas do Google Task.
 É possível: 
@@ -10,8 +10,60 @@
 
 Passos para instalação e configuração do sistema:
 
-0 - Baixe os arquivos do repositório.
+ 0 - Baixe os arquivos do repositório.
   -  <a href="https://github.com/danielcordeirorosa/To-do-list/archive/master.zip" target="_blank">Link.</a>
+  
+Detalhamento da estrutura e organização dos arquivos do projeto.
+```
+To-do-list/
+├── index.html
+├── css/
+│   ├── bootstrap-theme.css
+│   ├── bootstrap-theme.min.css
+│   ├── bootstrap.css
+│   ├── bootstrap.min.css
+│   ├── docs.css
+│   └── fonts/
+│   │   ├── fontawesome-webfont.eot
+│   │   ├── fontawesome-webfont.svg
+│   │   ├── fontawesome-webfont.ttf
+│   │   ├── fontawesome-webfont.woff
+│   │   ├── fontawesome-webfont.woff2
+│   │   ├── FontAwesome.otf
+│   │   ├── glyphicons-halflings-regular.woff2
+│   │   └── glyphicons.less
+│   ├── green.css
+│   ├── header-nav.css
+│   ├── index.animate.min.css
+│   ├── responsive.min.css
+│   ├── style.min.css
+│   ├── bootstrap.css
+│   ├── bootstrap.css.map
+│   ├── bootstrap.min.css
+│   └── bootstrap.min.css.map
+└── js/
+│   ├── bootstrap.js
+│   ├── bootstrap.min.js
+│   ├── bootstrapValidator.min.js
+│   ├── carousel.min.js
+│   ├── custom.min.js
+│   ├── effect.min.js
+│   ├── jquery.appear.js
+│   ├── jquery.cookie.min.js
+│   ├── jquery.easing.1.3.js
+│   ├── jquery.flexisel.min.js
+│   ├── jquery.min.js
+│   ├── jquery.prettyPhoto.min.js
+│   ├── jquery.sticky.js
+│   └── modernizr.jsbootstrap.js
+└── images/ 
+│   ├── bg-jumbo.png
+│   ├── calendar-banner.jpg
+│   └── pattern.png
+```
+
+As pastas css, js, images contem os arquivos da biblioteca Bootstrap que são necessários para formação do layout.
+No arquivo index.html esta contido todo conteúdo de HTML e Javascript que são necessários para acessar as APIs do Google e exibir o conteúdo.
 
 1 - Crie uma conta do Google ou utilize uma existente para ter acesso a API do <b>Google Tasks</b> e API do <b>Google People</b>.
   - <a href="https://accounts.google.com/SignUp" target="_blank">criação de Contas do Google.</a>

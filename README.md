@@ -74,7 +74,7 @@ No arquivo index.html esta contido todo conteúdo HTML e Javascript que são nec
 2 - Configure sua conta no <b>Google APIs Console</b> para obter credenciais de acesso a APIs do Google.
   - <a href="https://console.developers.google.com" target="_blank">Google APIs Console.</a>
 
-3 - Ative as APIs Google Task e Google People e de posse das chaves <b>Cliente ID e API key</b>, as insira no arquivo index.html nas variáveis apiKey e CLIENT_ID.
+3 - Ative as APIs Google Task e Google People e de posse das chaves <b>Cliente ID e API key</b>, insira as no arquivo index.html nas variáveis apiKey e CLIENT_ID.
 
    <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/selecionartaskapi.PNG?alt=media&token=7a9de262-ebc4-4740-834d-694ebd89690b" heigth='80%' width='80%'>
    <img src="https://firebasestorage.googleapis.com/v0/b/teste-lista-de-tarefas.appspot.com/o/adicionargooglepeople.PNG?alt=media&token=17b7e449-92c9-42ef-832f-3d52dad8e2c5" heigth='80%' width='80%'>

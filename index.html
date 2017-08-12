@@ -26,6 +26,10 @@ th, buttom, table ,tr ,td{
 	text-align: center;
 	vertical-align: middle;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+	text-align: center;
+	vertical-align: middle;
+}
 @keyframes animacaorolagem {
   0%   { opacity: 0; }
   50%  { opacity: .5; }
@@ -59,13 +63,19 @@ th, buttom, table ,tr ,td{
 	-webkit-animation: fa-spin 2s infinite linear;
 	animation: fa-spin 2s infinite linear;
 }
+.bordastabelatarefas{
+	border-bottom: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+
 </style>
 </head>
 <body id="home">
-<div id="pageloader">
-    <div class="loader-item fa fa-spin colored-border"></div>
+<div id="pageloader" style="background-color: transparent;">
+    <div id="iconepageloader" class="loader-item fa fa-spin colored-border" style="background-color: transparent;"></div>
 </div>
-<a id="irparacima" href="#" ><i class="fa fa-angle-up"></i></a>
 <header id="header">
 	<div class="bg-overlay pattern"></div>
 	<div id="navigation" class="navbar navbar-fixed-top">
@@ -109,10 +119,10 @@ th, buttom, table ,tr ,td{
 		</div>
 		<div class="row diviconeanimacao" style="margin-top:5%;display:none">
 			<div class="col-md-12 intro-text"> 
-				<button style="background-color: transparent;border: transparent;" onclick="movescroll('#rowprincipal')" class="glyphicon glyphicon-menu-down iconeanimacao" aria-hidden="true"></button>
+				<button style="background-color: transparent;border: transparent;" onclick="moveScroll('#rowprincipal')" class="glyphicon glyphicon-menu-down iconeanimacao" aria-hidden="true"></button>
 			</div>
 			<div class="col-md-12 intro-text"> 
-				<button style="background-color: transparent;border: transparent;" onclick="movescroll('#rowprincipal')" class="glyphicon glyphicon-menu-down iconeanimacao2" aria-hidden="true"></button>
+				<button style="background-color: transparent;border: transparent;" onclick="moveScroll('#rowprincipal')" class="glyphicon glyphicon-menu-down iconeanimacao2" aria-hidden="true"></button>
 			</div>
 		</div>
 	</div>
@@ -125,7 +135,7 @@ th, buttom, table ,tr ,td{
 				<div class="input-group">
 				<input id='inputtitulonovalista' style="position:initial;"  maxlength='30' type="text" class="form-control" placeholder="Nova Lista">
 				<span class="input-group-btn">
-					<button id='btncriarlista' class="btn btn-default" type="button">Criar</button>
+					<button id='btncriaListadeTarefas' class="btn btn-default" type="button">Criar</button>
 				</span>
 				</div>
 				<table id="lista" style='margin-top:5%;' class="table table-hover">  
@@ -150,10 +160,8 @@ th, buttom, table ,tr ,td{
 </section>
 <section id="copyright" class="index-copyright">
 	<div class="container"> 
-		<!-- Social Media -->
 		<div class="row social-media animated" data-animation="fadeInUp" data-animation-delay="400">
 			<div class="col-md-12"> 
-				<!-- Icons --> 
 				<a href="https://github.com/danielcordeirorosa/To-do-list" target="_blank">GitHub</a>
 			</div>
 		</div>
@@ -161,7 +169,6 @@ th, buttom, table ,tr ,td{
 			<div class="col-md-12 text-center" style="margin-top:9px">
 				<a href="terms.html">Terms</a> | <a href="privacy.html">Privacy Policy</a>
 			</div>
-			<!-- Copyright Title -->
 			<div class="col-md-12 text-center">
 				<p>Copyright 2017, Daniel Rosa.</p>
 			</div>
@@ -192,7 +199,7 @@ th, buttom, table ,tr ,td{
 <script type="text/javascript" src="./js/custom.min.js"></script>
 <script>
     // Enter an API key from the Google API Console:
-    //   https://console.developers.google.com/apis/credentials
+    // https://console.developers.google.com/apis/credentials
     var apiKey = 'AIzaSyDgRwdbQT8jfzGW4qHeOBi4dqeifJUtreM';
     // Client ID and API key from the Developer Console
     var CLIENT_ID = '1017346446163-v1v6nqbt59r88ssqh3lunefaujmk0b4j.apps.googleusercontent.com';
@@ -206,17 +213,20 @@ th, buttom, table ,tr ,td{
     var btnlogin2 = document.getElementById('btnlogin2');
     var btnsair = document.getElementById('btnsair');
     var rowprincipal = document.getElementById('rowprincipal');
+
+    var carregamentopendente=false;
     /**
      *  On load, called to load the auth2 library and API client library.
      */
     function handleClientLoad() {
-        gapi.load('client:auth2', initClient);
+        gapi.load('client:auth2', iniciaCliente);
     }
     /**
      *  Initializes the API client library and sets up sign-in state
      *  listeners.
      */
-    function initClient() {
+    function iniciaCliente() {
+        carregando(true);
         gapi.client.init({
 		    apiKey: apiKey,
             discoveryDocs: DISCOVERY_DOCS,
@@ -224,44 +234,51 @@ th, buttom, table ,tr ,td{
             scope: SCOPES
         }).then(function () {
             // Listen for sign-in state changes.
-            gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+            gapi.auth2.getAuthInstance().isSignedIn.listen(atualizaStatusSessao);
             // Handle the initial sign-in state.
-            updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+            atualizaStatusSessao(gapi.auth2.getAuthInstance().isSignedIn.get());
             btnlogin.onclick = handleAuthClick;
             btnlogin2.onclick = handleAuthClick;
             btnsair.onclick = handleSignoutClick;
+            carregando(false);
         }, function(reason) {
-			console.log(reason);
+            carregando(false);
+            console.log(reason);
+            alert("Desculpe, ocorreu um erro.")
 		});
     }
     /**
      *  Called when the signed in status changes, to update the UI
      *  appropriately. After a sign-in, the API is called.
      */
-    function updateSigninStatus(isSignedIn) {
-        if (isSignedIn) {
+    function atualizaStatusSessao(ativa) {
+        if (ativa) {
             btnlogin.style.display = 'none';
             btnlogin2.style.display = 'none';
             rowprincipal.style.display = 'block';
             btnsair.style.display = 'block';
-            listatasklist();
-			makeApiCall();
+            $('#btncriaListadeTarefas').on('click',function(){
+                var novotitulo=$("#inputtitulonovalista").val();
+                criaListadeTarefas(novotitulo);
+            });
+            buscaNomeUsuario();
+            listaListasdeTarefas();
         } else {
             btnlogin.style.display = 'block';
             btnlogin2.style.display = 'block';
             rowprincipal.style.display = 'none';	
             btnsair.style.display = 'none';	
-			escondenomeusuario();
+			escondeNomeUsuario();
 			$('#lista').html("<thead><tr><th>#</th><th>Nome da Lista</th><th>Data criação</th><th>Tarefas</th><th>Ações</th></tr></thead>");
         }
     }
-	function exibenomeusuario(nome)
+	function exibeNomeUsuario(nome)
 	{
 		$('#divnomeusuario').show();
 		$('#nomeusuario').html("<h1 style='margin-top: -5%;'>"+nome+"</h1>");
 		$('.diviconeanimacao').show();
 	}
-	function escondenomeusuario()
+	function escondeNomeUsuario()
 	{
 		$('#divnomeusuario').hide();
 		$('.diviconeanimacao').hide();
@@ -276,290 +293,312 @@ th, buttom, table ,tr ,td{
     /**
      *  Sign out the user upon button click.
      */
-    function lookupcamposituacao(s){
+    function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+    }
+    function lookupCampoSituacao(s){
 		if(s=="completed")
 		return "Completa";
 		if(s=="needsAction")
 		return "Aguardando execução";		
 	}
-    function lookupcampodata(data){
-		var formattedDate = new Date(data);
-	    	var min=formattedDate.getMinutes();
-	    	if((min+"").length==1)
+    function lookupCampoData(data){
+		var data= new Date(data);
+		var min=data.getMinutes();
+		if((min+"").length==1)
 		{
 		   min="0"+min;
 		}
-	    	var hr=formattedDate.getHours();
-	    	if((hr+"").length==1)
+		var hr=data.getHours();
+		if((hr+"").length==1)
 		{
 		   hr="0"+hr;
 		}
-		return (formattedDate.getDate()+"/"+(formattedDate.getMonth()+1)+"/"+formattedDate.getFullYear()+" "+hr+":"+min);
+		return (data.getDate()+"/"+(data.getMonth()+1)+"/"+data.getFullYear()+" "+hr+":"+min);
 	}
-    function lookupcamponotas(id,txt){
+    function lookupCampoNotas(task,txt){
         txt=txt||"";
-		return "<textarea id='notas"+id+"' taskid='"+id+"' class='form-control' rows='2'>"+txt+"</textarea>";
+		return "<textarea id='notas"+task+"' taskid='"+task+"' class='form-control' rows='2'>"+txt+"</textarea>";
 	}
-    function handleSignoutClick(event) {
-        gapi.auth2.getAuthInstance().signOut();
-    }
-	function addlisttask(listtask){
-		if(!listtask)
+	function addListadeTarefas(tasklist){
+		if(!tasklist)
 		{
 			$('#lista').append("<tr><td scope='row'>"+($('#lista > tbody > tr').length+1)+"</td><td colspan='3' class='tdeditartitulo'>Nenhum Registro encontrado</td></tr>");
 			return;
 		}
-		var titulo=listtask.title;
-		var id=listtask.id;
-		var data=listtask.updated;
+		var titulo=tasklist.title;
+		var id=tasklist.id;
+		var data=tasklist.updated;
 		var btndeletar="<button style='border:transparent;' tasklistid='"+id+"' type='button' class='btn btn-default glyphicon glyphicon-trash deletar"+id+"'></button>";
-		btndeletar=btndeletar+"<button style='border:transparent;' tasklistid='"+id+"' type='button' class='btn btn-default glyphicon glyphicon-pencil editar"+id+"'></button>";
+		var btneditar="<button style='border:transparent;' tasklistid='"+id+"' type='button' class='btn btn-default glyphicon glyphicon-pencil editar"+id+"'></button>";
 		var btnabrirlistadetarefas="<a id='btnabrirlistadetarefas"+id+"' role='button' data-toggle='collapse' href='#collapse"+id+"' aria-expanded='false' aria-controls='collapse"+id+"' tasklistid='"+id+"' type='button'>Tarefas</a>";
-		$('#lista').append("<tr id='tr"+id+"' class='contador'><td id='indice"+id+"' scope='row'>"+($('#lista > tbody > .contador').length+1)+"</td><td class='tdeditartitulo' titulo='"+titulo+"'>"+titulo+"</td><td>"+lookupcampodata(data)+"</td><td>"+btnabrirlistadetarefas+"</td><td>"+btndeletar+"</td></tr>");
-		$('#lista').append("<tr>" +
-			"<td colspan='5' style='padding: 0px;'>" +
-			"<div id='collapse"+id+"' style='margin-left: 3%; margin-right: 3%;' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>"+
-			"<table class='table table-hover' id='tarefasdalista"+id+"' style='border-bottom: 1px solid #ddd;border-left: 1px solid #ddd;border-right: 1px solid #ddd;"+
-            " border-bottom: 1px solid #ddd;' ><thead><tr><th>Tarefa</th><th>Anotações</th><th>Status</th><th>Ações</th></tr></thead></table>"+
-		"</div></td></tr>");
+		var colunaslistadetarefas="<td id='indice"+id+"' scope='row'>"+($('#lista > tbody > .contador').length+1)+"</td><td class='tdeditartitulo' titulo='"+titulo+"'>"+titulo+"</td><td>"+lookupCampoData(data)+"</td><td>"+btnabrirlistadetarefas+"</td><td>"+btndeletar+btneditar+"</td>";
+		$('#lista').append("<tr id='tr"+id+"' class='contador'>"+colunaslistadetarefas+"</tr>");
+
+		var cabecalhotabela="<thead style='background-color: rgba(221, 221, 221, 0.22);' ><tr><th>Tarefa</th><th>Anotações</th><th>Status</th><th>Ações</th></tr></thead>";
+		var tabela="<table class='table table-hover bordastabelatarefas' id='tarefasdalista"+id+"' >"+cabecalhotabela+"</table>";
+		var div ="<div id='collapse"+id+"' style='margin:0% 3% 0%  3%' class='panel-collapse collapse in' role='tabpanel' aria-labelledby='headingOne'>"+tabela+"</div>";
+		$('#lista').append("<tr><td colspan='5' style='padding: 0px;'>"+div+"</td></tr>");
+
 		$('.deletar'+id).on('click',function(){
-			deletarlista($(this).attr('tasklistid'));
+			deletaListadeTarefas($(this).attr('tasklistid'));
 		});
 		$('.editar'+id).on('click',function(){
-			abrircampoeditalista($(this).attr('tasklistid'));
+			abrecampoeditalista($(this).attr('tasklistid'));
 		});
-		tarefasdaslistas(id);
+		listaTarefasdasListasdeTarefas(id);
 	}
-	function addtask(parent,tasktemp){
-		if(!tasktemp)
+	function addTarefa(tasklist,task){
+		if(!task)
 		{
-			$('#tarefasdalista'+parent).append("<tr><th colspan='5'>Nenhuma tarefa cadastrada</th></tr>");
+			$('#tarefasdalista'+tasklist).append("<tr><th colspan='5'>Nenhuma tarefa cadastrada</th></tr>");
 			return;
 		}
-		if(lookupcamposituacao(tasktemp.status)=="Completa")
+        var campodata="Aberta em "+lookupCampoData(task.updated);
+        var camposituacao="<button id='btnconcluir"+task.id+"' class='btn btn-default btnconcluir"+task.id+"' taskid='"+task.id+"' style='margin-right: 2%;width:50%;' type='button'>Concluir</button></div>";
+        if(lookupCampoSituacao(task.status)=="Completa")
 		{
-            var camposituacao="<button id='btnabrir"+tasktemp.id+"'  class='btn btn-default btnabrir"+tasktemp.id+"' taskid='"+tasktemp.id+"' style='margin-right: 2%;width:50%;' type='button'>Reabrir tarefa</button></div>";
-            var campodata="Concluido em "+lookupcampodata(tasktemp.updated);
+            camposituacao="<button id='btnabrir"+task.id+"'  class='btn btn-default btnabrir"+task.id+"' taskid='"+task.id+"' style='margin-right: 2%;width:50%;' type='button'>Reabrir tarefa</button></div>";
+            campodata="Concluido em "+lookupCampoData(task.updated);
 		}
-		else
-		{
-            var campodata="Aberta em "+lookupcampodata(tasktemp.updated);
-            var camposituacao="<button id='btnconcluir"+tasktemp.id+"' class='btn btn-default btnconcluir"+tasktemp.id+"' taskid='"+tasktemp.id+"' style='margin-right: 2%;width:50%;' type='button'>Concluir</button></div>";
-        }
-		console.log(tasktemp);
-        var btndeletar="<button style='border:transparent;' tasklistid='"+parent+"' taskid='"+tasktemp.id+"' type='button' class='btn btn-default glyphicon glyphicon-trash deletar"+tasktemp.id+"'></button>";
-        var input="<input type='text' maxlength='30'  class='form-control novotitulotask' placeholder='Novo titulo' value='"+tasktemp.title+"'  taskid='"+tasktemp.id+"' id='ipuntnovotitulotask"+tasktemp.id+"' >";
-        var tds="<td>"+input+"</td><td>"+lookupcamponotas(tasktemp.id,tasktemp.notes)+"</td><td>"+campodata+"</td><td colspan='2' >"+camposituacao+btndeletar+"</td>";
-        $('#tarefasdalista'+parent).prepend("<tr id='tr"+tasktemp.id+"'  tasklistid='"+parent+"'>"+tds+"</tr>");
-        $('.deletar'+tasktemp.id).on('click',function(){
-            deletartarefa($(this).attr('tasklistid'),$(this).attr('taskid'));
+        var btndeletar="<button style='border:transparent;' tasklistid='"+tasklist+"' taskid='"+task.id+"' type='button' class='btn btn-default glyphicon glyphicon-trash deletar"+task.id+"'></button>";
+        var input="<input type='text' maxlength='30'  class='form-control novotitulotask' placeholder='Novo titulo' value='"+task.title+"'  taskid='"+task.id+"' id='ipuntnovotitulotask"+task.id+"' >";
+        var tds="<td>"+input+"</td><td>"+lookupCampoNotas(task.id,task.notes)+"</td><td>"+campodata+"</td><td colspan='2' >"+camposituacao+btndeletar+"</td>";
+        $('#tarefasdalista'+tasklist).prepend("<tr id='tr"+task.id+"'  tasklistid='"+tasklist+"'>"+tds+"</tr>");
+        $('.deletar'+task.id).on('click',function(){
+            deletaTarefa($(this).attr('tasklistid'),$(this).attr('taskid'));
         });
-        $('#notas'+tasktemp.id).on('change',function(){
-            salvaanotacao($(this).attr('taskid'),$(this).val());
+        $('#notas'+task.id).on('change',function(){
+            salvaAnotacao($(this).attr('taskid'),$(this).val());
         });
-        $('#ipuntnovotitulotask'+tasktemp.id).on('change',function(){
-            salvaatitulotask($(this).attr('taskid'),$(this).val());
+        $('#ipuntnovotitulotask'+task.id).on('change',function(){
+            salvaTituloTarefa($(this).attr('taskid'),$(this).val());
         });
-        $('#btnconcluir'+tasktemp.id).on('click',function(){
-            concluitarefa($(this).attr('taskid'));
+        $('#btnconcluir'+task.id).on('click',function(){
+            concluiTarefa($(this).attr('taskid'));
         });
-        $('#btnabrir'+tasktemp.id).on('click',function(){
-            reabretarefa($(this).attr('taskid'));
+        $('#btnabrir'+task.id).on('click',function(){
+            reabreTarefa($(this).attr('taskid'));
         });
 	}
-	function abrircampoeditalista(id){
-		removecampoeditartasklist(id);
-		var btnconfirmar="<button class='btn btn-default' id='btnsalvaedicao"+id+"' tasklistid='"+id+"' type='button'><span class='glyphicon glyphicon-ok'></span></button>";
-		var btncancelar="<button onclick=\"removecampoeditartasklist('"+id+"');\" class='btn btn-default' type='button'><span class='glyphicon glyphicon-remove'></span></button>";
-		var input="<input type='text' maxlength='30' class='form-control' placeholder='Novo titulo' id='ipuntnovotitulo"+id+"'>";
-		$('#tr'+id+' > .tdeditartitulo').append("<div class='input-group'>"+input+"<div class='input-group-btn'>"+btnconfirmar+btncancelar+"</div>");
-		$('#btnsalvaedicao'+id).on('click',function(){
-			atualizatasklist($('#ipuntnovotitulo'+$(this).attr('tasklistid')).val(),$(this).attr('tasklistid'));
+	function abrecampoeditalista(tasklist){
+		removeCampoEditarListadeTarefas(tasklist);
+		var btnconfirmar="<button class='btn btn-default' id='btnsalvaedicao"+tasklist+"' tasklistid='"+tasklist+"' type='button'><span class='glyphicon glyphicon-ok'></span></button>";
+		var btncancelar="<button onclick=\"removeCampoEditarListadeTarefas('"+tasklist+"');\" class='btn btn-default' type='button'><span class='glyphicon glyphicon-remove'></span></button>";
+		var input="<input type='text' maxlength='30' class='form-control' placeholder='Novo titulo' id='ipuntnovotitulo"+tasklist+"'>";
+		$('#tr'+tasklist+' > .tdeditartitulo').append("<div class='input-group'>"+input+"<div class='input-group-btn'>"+btnconfirmar+btncancelar+"</div>");
+		$('#btnsalvaedicao'+tasklist).on('click',function(){
+			atualizaTituloListadeTarefas($(this).attr('tasklistid'),$('#ipuntnovotitulo'+$(this).attr('tasklistid')).val());
 		});
 	}	
-	function removecampoeditartasklist(id)
+	function removeCampoEditarListadeTarefas(tasklist)
 	{
-		$('#tr'+id+' > .tdeditartitulo > .input-group').remove();
+		$('#tr'+tasklist+' > .tdeditartitulo > .input-group').remove();
 	}
-	function atualizatasklist(novotitulo,id)
+	function atualizaTituloListadeTarefas(tasklist,novotitulo)
 	{
 		if(novotitulo.length<1)
 		{
-			exibemsgerro("Titulo muito curto");
-			return;
+		    return;
 		}
 		else if($( "td[titulo='"+novotitulo+"']" ).length>0)
 		{
-            exibemsgerro("Titulo já cadastrado para outra tarefa.");
+            exibeMsgErro("Titulo já cadastrado para outra tarefa.");
 			return;
 		}
-		gapi.client.tasks.tasklists.update({'tasklist':id,id:id,'title':novotitulo}).then(function(response) {
-			listatasklist();
-		}, function(reason) {
+        carregando(true);
+		gapi.client.tasks.tasklists.update({
+			'tasklist':tasklist,
+			'id':tasklist,
+			'title':novotitulo
+		}).then(function(response) {
+			listaListasdeTarefas();
+            carregando(false);
+		}, function(reason){
 			alert('Erro: ' + reason.result.error.message);
+            carregando(false);
 		});
 	}
-    function salvaanotacao(id,anotacao){
+    function salvaAnotacao(task,anotacao){
         if(anotacao.length<1)
         {
             anotacao="";
         }
-        var data={};
-        data['tasklist']=$('#tr'+id).attr('tasklistid');
-        data['task']=id;
-        data['id']=id;
-        data['notes']=anotacao;
-        gapi.client.tasks.tasks.update(data).then(function(r){
-            console.log(r);
-            exibemsgsucesso("Anotação salva com sucesso.")
+        carregando(true);
+        gapi.client.tasks.tasks.update({
+			'tasklist':$('#tr'+task).attr('tasklistid'),
+			'task':task,
+			'id':task,
+			'notes':anotacao
+        }).then(function(r){
+            exibeMsgSucesso("Anotação salva com sucesso.")
+            carregando(false);
         },function(r){
-            console.log(r);
             alert('Erro o registro não foi atualizado.');
+            carregando(false);
         });
     }
-	function salvaatitulotask(id,novotitulo){
+	function salvaTituloTarefa(task,novotitulo){
         if(novotitulo.length<1)
         {
-            exibemsgerro("Titulo muito curto");
             return;
         }
         else if($( "td[titulo='"+novotitulo+"']" ).length>0)
         {
-            exibemsgerro("Titulo já cadastrado para outra tarefa.");
+            exibeMsgErro("Titulo já cadastrado para outra Tarefa.");
             return;
         }
-        var data={};
-        data['tasklist']=$('#tr'+id).attr('tasklistid');
-        data['task']=id;
-        data['id']=id;
-        data['title']=novotitulo;
-        gapi.client.tasks.tasks.update(data).then(function(r){
-            console.log(r);
-            exibemsgsucesso("Titulo "+novotitulo+" foi salvo com sucesso.");
-        },function(r){
-            console.log(r);
-            alert('Erro o registro não foi atualizado.');
-        });
-	}
-	function concluitarefa(id){
-        var data={};
-        data['tasklist']=$('#tr'+id).attr('tasklistid');
-        data['task']=id;
-        data['id']=id;
-        data['status']='completed';
-        gapi.client.tasks.tasks.update(data).then(function(r){
-            console.log(r);
-            exibemsgsucesso("Tarefa foi concluida com sucesso.");
-            tarefasdaslistas($('#tr'+id).attr('tasklistid'));
-        },function(r){
-            console.log(r);
-            alert('Erro o registro não foi atualizado.');
-        });
-	}
-    function reabretarefa(id){
+        carregando(true);
         gapi.client.tasks.tasks.update({
-			'tasklist':$('#tr'+id).attr('tasklistid'),
-			'task':id,
-			'id':id,
+			'tasklist':$('#tr'+task).attr('tasklistid'),
+			'task':task,
+			'id':task,
+			'title':novotitulo
+		}).then(function(r){
+            exibeMsgSucesso("Titulo "+novotitulo+" foi salvo com sucesso.");
+            carregando(false);
+        },function(r){
+            alert('Erro o registro não foi atualizado.');
+            carregando(false);
+        });
+	}
+	function concluiTarefa(task){
+        carregando(true);
+        gapi.client.tasks.tasks.update({
+			'tasklist':$('#tr'+task).attr('tasklistid'),
+            'task':task,
+        	'id':task,
+        	'status':'completed'
+		}).then(function(r){
+            exibeMsgSucesso("Tarefa foi concluida com sucesso.");
+            listaTarefasdasListasdeTarefas($('#tr'+task).attr('tasklistid'));
+            carregando(false);
+        },function(r){
+            alert('Erro o registro não foi atualizado.');
+            carregando(false);
+        });
+	}
+    function reabreTarefa(task){
+        carregando(true);
+        gapi.client.tasks.tasks.update({
+			'tasklist':$('#tr'+task).attr('tasklistid'),
+			'task':task,
+			'id':task,
 			'status':'needsAction'
 		}).then(function(r){
-            console.log(r);
-            exibemsgsucesso("Tarefa foi concluida com sucesso.");
-            tarefasdaslistas($('#tr'+id).attr('tasklistid'));
+            exibeMsgSucesso("Tarefa foi concluida com sucesso.");
+            listaTarefasdasListasdeTarefas($('#tr'+task).attr('tasklistid'));
+            carregando(false);
         },function(r){
-            console.log(r);
             alert('Erro o registro não foi atualizado.');
+            carregando(false);
         });
     }
-    function listatasklist() {
-		$('#lista').html("<thead><tr><th>#</th><th>Nome da Lista</th><th>Data criação</th><th>Tarefas</th><th>Ações</th></tr></thead>");
+    function listaListasdeTarefas() {
+        carregando(true);
         gapi.client.tasks.tasklists.list({
         }).then(function(response) {
+            $('#lista').html("<thead><tr><th>#</th><th>Nome da Lista</th><th>Data criação</th><th>Tarefas</th><th>Ações</th></tr></thead>");
             var taskLists = response.result.items;
             if (taskLists && taskLists.length > 0) {
                 for (var i = 0; i < taskLists.length; i++) {
-                    console.log(taskLists[i]);
-                    addlisttask(taskLists[i]);
+                    addListadeTarefas(taskLists[i]);
                 }
             } else {
-                addlisttask(false);
+                addListadeTarefas(false);
             }
+            carregando(false);
         }, function(reason) {
         	alert('Erro: ' + reason.result.error.message);
+            carregando(false)
         });
     }
-	function tarefasdaslistas(id) {
-        var btnnovo="<button class='btn btn-default btnnovo"+id+"' id='btnnovo"+id+"' tasklistid='"+id+"' type='button'>Nova Tarefa</button></div>";
-        $('#tarefasdalista'+id).html("<thead><tr><th>Tarefa</th><th>Anotações</th><th>Status</th><th>Ações</th><th>"+btnnovo+"</th></tr></thead>");
-        $("#btnnovo"+id).on('click',function(){
-            novatarefa($(this).attr('tasklistid'));
-        });
-        gapi.client.tasks.tasks.list({'tasklist':id}).then(function(response) {
-            var task = response.result.items;
+	function listaTarefasdasListasdeTarefas(tasklist) {        
+        carregando(true);
+        var btnnovo="<button class='btn btn-default btnnovo"+tasklist+"' id='btnnovo"+tasklist+"' tasklistid='"+tasklist+"' type='button'>Nova Tarefa</button></div>";
+        $('#tarefasdalista'+tasklist).html("<thead style='background-color: rgba(221, 221, 221, 0.22);' ><tr><th>Tarefa</th><th>Anotações</th><th>Status</th><th>Ações</th><th>"+btnnovo+"</th></tr></thead>");
+        $("#btnnovo"+tasklist).on('click',function(){
+            criaTarefa($(this).attr('tasklistid'));
+        });        
+        gapi.client.tasks.tasks.list({'tasklist':tasklist}).then(function(response) {
+            var task=response.result.items;
             if (task && task.length > 0) {
-                for (var i = 0; i < task.length; i++) {                    
-					addtask(id,task[i]);
+                for (var i = 0; i < task.length; i++){                    
+					addTarefa(tasklist,task[i]);
                 }
             } else {
-                console.log('Nenhuma tarefa cadastrada!','');
-				addtask(id,false);
+				addTarefa(tasklist,false);
             }
+            carregando(false);
         }, function(reason) {
-			console.log(reason);
 			alert('Erro: ' + reason.result.error.message);
+			carregando(false);
         });
     }
-	function criarlista(titulo) {
+	function criaListadeTarefas(titulo) {
+		if(carregamentopendente){
+            exibeMsgErro("Aguarde, ainda tem uma alteração pendente de carreamento.");
+		    return;
+		}
 		if(titulo.length<1)
 		{
-			alert("Titulo muito curto");
 			return;
 		}
-		else if($( "td[titulo='"+titulo+"']" ).length>0)
+		else if($("td[titulo='"+titulo+"']").length>0)
 		{
-			alert("Titulo já cadastrado para outra tarefa.");
+            exibeMsgErro("Titulo já cadastrado para outra Lista de Tarefa.");
 			return;
 		}
-	   gapi.client.tasks.tasklists.insert({'title':titulo}).then(function(response) {
-			addlisttask(response.result);			
-			movescroll('#tr'+response.result.id);			
+		carregando(true);
+		gapi.client.tasks.tasklists.insert({'title':titulo}).then(function(response) {
+			addListadeTarefas(response.result);			
+			moveScroll('#tr'+response.result.id);
+            carregando(false);
 		}, function(reason) {
-		  alert('Erro: ' + reason.result.error.message);
+			alert('Erro: ' + reason.result.error.message);
+            carregando(false);
 		});
 	}
-	function novatarefa(idparent) {
-		gapi.client.tasks.tasks.insert({'tasklist':idparent}).then(function(response) {
-	   		tarefasdaslistas(idparent);
+	function criaTarefa(tasklist) {
+        if(carregamentopendente){
+            exibeMsgErro("Aguarde, ainda tem uma alteração pendente de carreamento.");
+            return;
+        }
+        carregando(true);
+		gapi.client.tasks.tasks.insert({'tasklist':tasklist}).then(function(response) {
+	   		listaTarefasdasListasdeTarefas(tasklist);
+            carregando(false);
 		},function(reason){
-			console.log(reason);
+            alert('Erro ao criar Tarefa');
+            carregando(false);
 		});
 	}
-	function movescroll(seletor)
+	function moveScroll(seletor)
 	{
-		$('html, body').animate({
-			scrollTop: $(seletor).offset().top
-		}, 1000);
+		$('html, body').animate({scrollTop: $(seletor).offset().top}, 1000);
 	}
-	function deletarlista(id) {
-	   gapi.client.tasks.tasklists.delete({'tasklist':id}).then(function(response) {
-			console.log(response);
-			listatasklist();
-		}, function(reason) {
-	       if($('#indice'+id).html()==1)
+	function deletaListadeTarefas(tasklist) {
+        carregando(true);
+	   gapi.client.tasks.tasklists.delete({'tasklist':tasklist}).then(function(response) {
+			listaListasdeTarefas();
+           carregando(false);
+       }, function(reason) {
+	       if($('#indice'+tasklist).html()==1)
 		   {
-               console.log(reason);
-               alert('O google bloquea a exclusão da primeira lista de tarefas.');
+               exibeMsgErro('O google bloquea a exclusão da primeira lista de tarefas.');
 		   }
 		   else
 		   {
-               console.log(reason);
                alert('Erro: ' + reason.result.error.message);
 		   }
+           carregando(false);
 		});
 	}
-	function deletartarefa(tasklistid,taskid) {
-        gapi.client.tasks.tasks.delete({'tasklist':tasklistid,'task':taskid}).then(function(resp) {
-           $('#tr'+taskid).remove();
+	function deletaTarefa(tasklist,task) {
+        carregando(true);
+        gapi.client.tasks.tasks.delete({'tasklist':tasklist,'task':task}).then(function(resp) {
+           $('#tr'+task).remove();
+            carregando(false);
         }, function(reason) {
             if(reason.result.status==404)
 			{
@@ -568,26 +607,24 @@ th, buttom, table ,tr ,td{
 			else{
                 alert('Erro: ' + reason.result.error.message);
 			}
-            console.log(reason);
+            carregando(false);
         });
 	}
-	$('#btncriarlista').on('click',function(){
-		var novotitulo=$("#inputtitulonovalista").val();
-		criarlista(novotitulo);
-	});	
-	function makeApiCall() {
+	function buscaNomeUsuario() {
+        carregando(true);
 		gapi.client.people.people.get({
 			'resourceName': 'people/me',
 			'requestMask.includeField': 'person.names'
 		}).then(function(resp) {
-			var name = resp.result.names[0].displayName;
-			exibenomeusuario(name);
+			exibeNomeUsuario(resp.result.names[0].displayName);
+			carregando(false);
 		}, function(reason) {
 			alert('Erro: ' + reason.result.error.message);
+            carregando(false);
 		});
 	}
 	var tempomsgdeerro;
-    function exibemsgerro(msg){
+    function exibeMsgErro(msg){
         if($('.divalertadeerro'))
         {
             clearTimeout(tempomsgdeerro);
@@ -602,7 +639,7 @@ th, buttom, table ,tr ,td{
         }, 5000);
     }
     var tempomsgdesucesso;
-    function exibemsgsucesso(msg){
+    function exibeMsgSucesso(msg){
         if($('.divalertadesucesso'))
         {
             clearTimeout(tempomsgdesucesso);
@@ -621,19 +658,28 @@ th, buttom, table ,tr ,td{
 $(window).scroll(function(){
 	if($(this).scrollTop()<700)
 	{
-		$("#irparacima").fadeOut();
-		$('#navigation').show();
+		$("#navigation").show();
 	}
 	else
 	{
 		$('#navigation').hide();
-		$("#irparacima").fadeIn();
 	}
 });
-$("#irparacima").on('click',function(){
-	$('html, body').animate({scrollTop:0},'fast');
-	return false;
-});
+function carregando(exibir){
+    carregamentopendente=exibir;
+    if(exibir)
+	{
+        $('#pageloader').show();
+        $('#iconepageloader').show();
+	}
+	else
+	{
+	    setTimeout(function(){
+            $('#pageloader').hide();
+            $('#iconepageloader').hide();
+		},500);
+	}
+}
 </script>
 <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"></script>
 </body>
